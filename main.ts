@@ -33,11 +33,12 @@ async function handle(request: Request): Promise<Response> {
     case request.method === "POST" && url.pathname === "/todos": {
       const body = await request.formData();
       const formData = Object.fromEntries(body.entries());
-      const todo = db.createTodo(
-        String(formData.title),
-        Boolean(formData.completed),
-      );
-      return new Response(JSON.stringify(todo), { status: 201 });
+      console.log({ formData });
+      // const todo = db.createTodo(
+      //   String(formData.title),
+      //   Boolean(formData.completed),
+      // );
+      return new Response(JSON.stringify({}), { status: 201 });
     }
 
     case request.method === "PUT" && url.pathname.startsWith("/todos/"): {
@@ -47,9 +48,9 @@ async function handle(request: Request): Promise<Response> {
       const todo = db.updateTodo(id, title, completed);
       if (todo) {
         return new Response(JSON.stringify(todo), { status: 200 });
-      } else {
-        return new Response("Not Found", { status: 404 });
       }
+
+      return new Response("Not Found", { status: 404 });
     }
 
     case request.method === "DELETE" && url.pathname.startsWith("/todos/"): {
@@ -57,9 +58,9 @@ async function handle(request: Request): Promise<Response> {
       const todo = db.deleteTodo(id);
       if (todo) {
         return new Response(JSON.stringify(todo), { status: 200 });
-      } else {
-        return new Response("Not Found", { status: 404 });
       }
+
+      return new Response("Not Found", { status: 404 });
     }
 
     default: {

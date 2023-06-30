@@ -31,7 +31,7 @@ We look forward to having you join us!
 > NOTE: [Install Deno](https://github.com/denoland/deno_install#readme) if you haven't already.
 
 ```sh
-deno run --allow-net --allow-read --allow-env --unstable main.ts
+deno task start
 ```
 
 ## Test the HTTP server
