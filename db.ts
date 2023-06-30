@@ -16,9 +16,10 @@ export function getTodos(): Todo[] {
 }
 
 /**
- * getTodoById retrieves a todo by its ID.
+ * getTodoByID retrieves a todo by its ID.
  */
-export function getTodoById(id: string): Todo | undefined {
+export function getTodoByID(id: string): Todo | undefined {
+  console.log({ todos, id });
   return todos.find((todo) => todo.id === id);
 }
 
@@ -29,7 +30,7 @@ export function createTodo(
   title: string,
   completed: boolean,
 ): Todo {
-  const id = generateId();
+  const id = generateID();
   const todo: Todo = { id, title, completed };
   todos.push(todo);
   return todo;
@@ -43,7 +44,7 @@ export function updateTodo(
   title?: string,
   completed?: boolean,
 ): Todo | undefined {
-  const todo = getTodoById(id);
+  const todo = getTodoByID(id);
   if (todo) {
     if (title) todo.title = title;
     if (completed !== undefined) todo.completed = completed;
@@ -62,8 +63,8 @@ export function deleteTodo(id: string): Todo | undefined {
 }
 
 /**
- * generateId generates a random ID for a todo.
+ * generateID generates a random ID for a todo.
  */
-function generateId(): string {
-  return Math.random().toString(36).substr(2, 9);
+function generateID(): string {
+  return Math.random().toString(36).substring(2, 9);
 }

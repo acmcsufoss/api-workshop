@@ -20,6 +20,14 @@ async function handle(request: Request): Promise<Response> {
   const url = new URL(request.url);
 
   switch (true) {
+    case request.method === "GET" && url.pathname === "/": {
+      const body = Deno.readTextFileSync("static/index.html");
+      return new Response(body, {
+        status: 200,
+        headers: { "Content-Type": "text/html" },
+      });
+    }
+
     case request.method === "GET" && url.pathname === "/todos": {
       const todos = db.getTodos();
       return new Response(JSON.stringify(todos), { status: 200 });
@@ -34,7 +42,8 @@ async function handle(request: Request): Promise<Response> {
 
     case request.method === "GET" && url.pathname.startsWith("/todos/"): {
       const id = parseTodoID(url.pathname);
-      const todo = db.getTodoById(id);
+      const todo = db.getTodoByID(id);
+      console.log({ todo, id, todos: db.getTodos() });
       if (todo) {
         return new Response(JSON.stringify(todo), { status: 200 });
       } else {
