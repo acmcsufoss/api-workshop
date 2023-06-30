@@ -12,6 +12,5 @@ export interface Todo {
  */
 export function parseTodoID(url: string): string {
   const { 2: id } = url.split("/");
-  console.log({ url, id });
   return id;
 }

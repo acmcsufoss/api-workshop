@@ -19,7 +19,6 @@ export function getTodos(): Todo[] {
  * getTodoByID retrieves a todo by its ID.
  */
 export function getTodoByID(id: string): Todo | undefined {
-  console.log({ todos, id });
   return todos.find((todo) => todo.id === id);
 }
 

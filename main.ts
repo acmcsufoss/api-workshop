@@ -13,9 +13,6 @@ function main() {
   Deno.serve({ port: PORT }, handle);
 }
 
-/**
- * handle handles an incoming HTTP request.
- */
 async function handle(request: Request): Promise<Response> {
   const url = new URL(request.url);
 
@@ -34,21 +31,13 @@ async function handle(request: Request): Promise<Response> {
     }
 
     case request.method === "POST" && url.pathname === "/todos": {
-      const body = await request.text();
-      const { title, completed } = JSON.parse(body);
-      const todo = db.createTodo(title, completed);
+      const body = await request.formData();
+      const formData = Object.fromEntries(body.entries());
+      const todo = db.createTodo(
+        String(formData.title),
+        Boolean(formData.completed),
+      );
       return new Response(JSON.stringify(todo), { status: 201 });
-    }
-
-    case request.method === "GET" && url.pathname.startsWith("/todos/"): {
-      const id = parseTodoID(url.pathname);
-      const todo = db.getTodoByID(id);
-      console.log({ todo, id, todos: db.getTodos() });
-      if (todo) {
-        return new Response(JSON.stringify(todo), { status: 200 });
-      } else {
-        return new Response("Not Found", { status: 404 });
-      }
     }
 
     case request.method === "PUT" && url.pathname.startsWith("/todos/"): {
