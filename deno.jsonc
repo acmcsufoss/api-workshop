@@ -1,5 +1,7 @@
 {
   "tasks": {
-    "start": "deno run --allow-net --allow-read --allow-env --unstable main.ts"
+    "start": "deno run --allow-net --allow-read --allow-env --unstable main.ts",
+    "lock": "deno cache --lock-write main.ts && deno task udd",
+    "udd": "deno run -r --allow-read=. --allow-write=. --allow-net https://deno.land/x/udd/main.ts deps.ts"
   }
 }
