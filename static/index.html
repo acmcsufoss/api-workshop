@@ -2,52 +2,66 @@
 <html lang="en">
   <head>
     <title>Todo playground</title>
+    <link rel="icon" href="https://acmcsuf.com/favicon.ico" />
+
+    <script type="module" src="/db.js"></script>
   </head>
   <body>
-    <script>
-      // Helper function to make HTTP requests using Fetch API
-      async function makeRequest(pathname, method, body) {
-        const response = await fetch(`http://localhost:8080${pathname}`, {
-          method,
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        });
-        const data = await response.json();
-        return { status: response.status, data };
-      }
+    <h1>Todo playground</h1>
+    <form action="/todos" method="POST">
+      <input type="text" name="title" />
+      <input type="checkbox" name="completed" />
+      <button type="submit">Create</button>
+    </form>
 
-      // Function to get all todos
-      async function getTodos() {
-        const response = await makeRequest("/todos", "GET");
-        return response.data;
-      }
+    <div id="todos"></div>
 
-      // Function to create a new todo
-      async function createTodo(title, completed) {
-        const todo = { title, completed };
-        const response = await makeRequest("/todos", "POST", todo);
-        return response.data;
-      }
+    <script type="module">
+      import * as db from "/db.js";
 
-      // Function to get a todo by ID
-      async function getTodoByID(id) {
-        const response = await makeRequest(`/todos/${id}`, "GET");
-        return response.data;
-      }
+      window.addEventListener("load", async () => {
+        const todos = await db.getTodos();
+        renderTodos(todos);
+      });
 
-      // Function to update a todo by ID
-      async function updateTodoByID(id, title, completed) {
-        const todo = { title, completed };
-        const response = await makeRequest(`/todos/${id}`, "PUT", todo);
-        return response.data;
-      }
+      function renderTodos(todos) {
+        const todosElement = document.getElementById("todos");
+        for (const todo of todos) {
+          const todoElement = document.createElement("li");
+          const updateFormElement = document.createElement("form");
+          updateFormElement.action = `/todos/${todo.id}`;
+          updateFormElement.method = "POST";
 
-      // Function to delete a todo by ID
-      async function deleteTodoByID(id) {
-        const response = await makeRequest(`/todos/${id}`, "DELETE");
-        return response.data;
+          const titleElement = document.createElement("input");
+          titleElement.type = "text";
+          titleElement.name = "title";
+          titleElement.value = todo.title;
+          updateFormElement.appendChild(titleElement);
+
+          const completedElement = document.createElement("input");
+          completedElement.type = "checkbox";
+          completedElement.name = "completed";
+          completedElement.checked = todo.completed;
+          updateFormElement.appendChild(completedElement);
+
+          const updateButtonElement = document.createElement("button");
+          updateButtonElement.type = "submit";
+          updateButtonElement.innerText = "Update";
+          updateFormElement.appendChild(updateButtonElement);
+          todoElement.appendChild(updateFormElement);
+
+          const deleteFormElement = document.createElement("form");
+          deleteFormElement.action = `/todos/${todo.id}/delete`;
+          deleteFormElement.method = "POST";
+
+          const deleteButtonElement = document.createElement("button");
+          deleteButtonElement.type = "submit";
+          deleteButtonElement.innerText = "Delete";
+          deleteFormElement.appendChild(deleteButtonElement);
+
+          todoElement.appendChild(deleteFormElement);
+          todosElement.appendChild(todoElement);
+        }
       }
     </script>
   </body>

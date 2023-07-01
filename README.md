@@ -8,8 +8,8 @@
 
 ## Event text
 
-Event text:
-Join us for our API workshop where we will demonstrate the process of creating and deploying APIs for serverless platforms.
+Event text: Join us for our API workshop where we will demonstrate the process
+of creating and deploying APIs for serverless platforms.
 
 In this workshop, we will cover the following topics:
 
@@ -18,20 +18,26 @@ In this workshop, we will cover the following topics:
 - Exploring serverless platforms such as Cloudflare/Deno/Supabase and Vercel
 - Implementing API endpoints and handling requests and responses
 
-The workshop will be held on Friday, June 23rd from 11am to 12pm Pacific Time in the designated workshop voice channel of our Discord server.
+The workshop will be held on Friday, June 23rd from 11am to 12pm Pacific Time in
+the designated workshop voice channel of our Discord server.
 
-To participate, please join our Discord server and navigate to the workshop voice channel at the specified time on June 23rd.
+To participate, please join our Discord server and navigate to the workshop
+voice channel at the specified time on June 23rd.
 
-Whether you're a beginner or an experienced developer, this workshop will provide valuable insights and practical guidance for deploying APIs to serverless platforms. Don't miss out on this opportunity to level up your API development skills!
+Whether you're a beginner or an experienced developer, this workshop will
+provide valuable insights and practical guidance for deploying APIs to
+serverless platforms. Don't miss out on this opportunity to level up your API
+development skills!
 
 We look forward to having you join us!
 
 ## Run the HTTP server
 
-> NOTE: [Install Deno](https://github.com/denoland/deno_install#readme) if you haven't already.
+> NOTE: [Install Deno](https://github.com/denoland/deno_install#readme) if you
+> haven't already.
 
 ```sh
-deno run --allow-net --allow-read --allow-env --unstable main.ts
+deno task start
 ```
 
 ## Test the HTTP server

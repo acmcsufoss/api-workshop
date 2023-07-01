@@ -10,8 +10,7 @@ export interface Todo {
 /**
  * parseTodoID parses the ID of a todo from a URL.
  */
-export function parseTodoID(url: string): string {
-  const { 2: id } = url.split("/");
-  console.log({ url, id });
+export function parseTodoID(pathname: string): string {
+  const [, , id] = pathname.split("/");
   return id;
 }
