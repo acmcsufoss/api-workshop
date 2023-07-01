@@ -1,4 +1,4 @@
-import { parseBoolean } from "./deps.ts";
+import { logger, parseBoolean } from "./deps.ts";
 import { PORT } from "./env.ts";
 import { parseTodoID } from "./todo.ts";
 import { InMemoryDB } from "./db/in_memory_db.ts";
@@ -22,7 +22,7 @@ async function handle(request: Request): Promise<Response> {
   switch (true) {
     case request.method === "GET" && url.pathname === "/": {
       const body = Deno.readTextFileSync("static/index.html");
-      console.log("Found index.html");
+      logger.info("Found index.html");
       return new Response(body, {
         status: 200,
         headers: { "Content-Type": "text/html" },
@@ -31,7 +31,7 @@ async function handle(request: Request): Promise<Response> {
 
     case request.method === "GET" && url.pathname === "/db.js": {
       const body = Deno.readTextFileSync("static/db.js");
-      console.log("Found db.js");
+      logger.info("Found db.js");
       return new Response(body, {
         status: 200,
         headers: { "Content-Type": "application/javascript" },
@@ -40,7 +40,7 @@ async function handle(request: Request): Promise<Response> {
 
     case request.method === "GET" && url.pathname === "/todos": {
       const todos = await db.getTodos();
-      console.log("Found todos:", todos);
+      logger.info(`Found todos: ${JSON.stringify(todos)}`);
       return new Response(JSON.stringify(todos), { status: 200 });
     }
 
@@ -51,7 +51,7 @@ async function handle(request: Request): Promise<Response> {
         return new Response("Not Found", { status: 404 });
       }
 
-      console.log("Found todo:", todo);
+      logger.info(`Found todo: ${JSON.stringify(todo)}`);
       return new Response(JSON.stringify(todo), { status: 200 });
     }
 
@@ -66,7 +66,7 @@ async function handle(request: Request): Promise<Response> {
         String(formData.title),
         parseBoolean(formData.completed as string) || false,
       );
-      console.log("Created todo:", todo);
+      logger.info(`Created todo: ${JSON.stringify(todo)}`);
       return Response.redirect(url.origin);
     }
 
@@ -79,7 +79,7 @@ async function handle(request: Request): Promise<Response> {
         return new Response("Not Found", { status: 404 });
       }
 
-      console.log("Deleted todo:", todo);
+      logger.info(`Deleted todo: ${JSON.stringify(todo)}`);
       return Response.redirect(url.origin);
     }
 
@@ -93,7 +93,7 @@ async function handle(request: Request): Promise<Response> {
         return new Response("Not Found", { status: 404 });
       }
 
-      console.log("Updated todo:", todo);
+      logger.info(`Updated todo: ${JSON.stringify(todo)}`);
       return Response.redirect(url.origin);
     }
 
